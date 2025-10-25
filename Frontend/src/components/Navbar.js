@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Cpu, Home, FileText, Layers, FolderOpen } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
@@ -8,34 +9,32 @@ const Navbar = () => {
     return location.pathname === path ? 'nav-link active' : 'nav-link';
   };
 
+  const navItems = [
+    { path: '/', label: 'Home', icon: <Home size={18} /> },
+    { path: '/requirements', label: 'Requirements', icon: <FileText size={18} /> },
+    { path: '/architecture', label: 'Architecture', icon: <Layers size={18} /> },
+    { path: '/sessions', label: 'Sessions', icon: <FolderOpen size={18} /> },
+  ];
+
   return (
     <nav className="navbar">
-      <div className="container d-flex justify-content-between align-items-center">
-        <Link to="/" className="navbar-brand">
-          🔧 SE Workbench
-        </Link>
-        <ul className="navbar-nav">
-          <li>
-            <Link to="/" className={isActive('/')}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/requirements" className={isActive('/requirements')}>
-              Requirements Analysis
-            </Link>
-          </li>
-          <li>
-            <Link to="/architecture" className={isActive('/architecture')}>
-              Architecture Generator
-            </Link>
-          </li>
-          <li>
-            <Link to="/sessions" className={isActive('/sessions')}>
-              Design Sessions
-            </Link>
-          </li>
-        </ul>
+      <div className="container">
+        <div className="navbar-content">
+          <Link to="/" className="navbar-brand">
+            <Cpu size={32} />
+            SE Workbench
+          </Link>
+          <ul className="navbar-nav">
+            {navItems.map((item) => (
+              <li key={item.path}>
+                <Link to={item.path} className={isActive(item.path)}>
+                  {item.icon}
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </nav>
   );

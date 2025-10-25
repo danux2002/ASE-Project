@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { Layers, Plus, X, Zap, RefreshCw } from 'lucide-react';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { generateArchitecture } from '../services/api';
@@ -74,12 +75,19 @@ const ArchitectureGenerator = () => {
   };
 
   return (
-    <div>
-      <div className="card">
-        <h1 className="mb-4">Architecture Generator</h1>
-        <p className="text-muted mb-4">
-          Generate comprehensive system architectures based on your project specifications.
+    <div className="fade-in">
+      {/* Header Section */}
+      <div className="hero-section mb-5">
+        <div className="d-flex align-items-center justify-content-center mb-4">
+          <Layers size={48} className="text-primary me-3" />
+          <h1 className="hero-title mb-0">Architecture Generator</h1>
+        </div>
+        <p className="hero-subtitle">
+          Generate comprehensive system architectures tailored to your project specifications
         </p>
+      </div>
+
+      <div className="card">
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -120,16 +128,17 @@ const ArchitectureGenerator = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Add a feature..."
+                placeholder="Add a feature (e.g., User authentication, Real-time chat)..."
                 value={newFeature}
                 onChange={(e) => setNewFeature(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddFeature(e)}
               />
               <button 
                 type="button" 
-                className="btn btn-secondary"
+                className="btn btn-success"
                 onClick={handleAddFeature}
               >
+                <Plus size={16} />
                 Add
               </button>
             </div>
@@ -140,13 +149,15 @@ const ArchitectureGenerator = () => {
                     key={index}
                     className="badge"
                     style={{ 
-                      background: '#007bff', 
+                      background: 'var(--primary-gradient)', 
                       color: 'white', 
-                      padding: '5px 10px', 
-                      borderRadius: '15px',
+                      padding: '8px 12px', 
+                      borderRadius: '20px',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '5px'
+                      gap: '8px',
+                      fontSize: '14px',
+                      fontWeight: '500'
                     }}
                   >
                     {feature}
@@ -158,11 +169,17 @@ const ArchitectureGenerator = () => {
                         border: 'none',
                         color: 'white',
                         cursor: 'pointer',
-                        padding: '0',
-                        marginLeft: '5px'
+                        padding: '2px',
+                        marginLeft: '4px',
+                        borderRadius: '50%',
+                        width: '18px',
+                        height: '18px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}
                     >
-                      ×
+                      <X size={12} />
                     </button>
                   </span>
                 ))}
@@ -191,17 +208,28 @@ const ArchitectureGenerator = () => {
           <div className="d-flex gap-3">
             <button 
               type="submit" 
-              className="btn btn-primary"
+              className="btn btn-lg flex-fill"
               disabled={loading}
             >
-              {loading ? 'Generating...' : 'Generate Architecture'}
+              {loading ? (
+                <>
+                  <Zap size={20} className="animate-spin" />
+                  Generating Architecture...
+                </>
+              ) : (
+                <>
+                  <Layers size={20} />
+                  Generate Architecture
+                </>
+              )}
             </button>
             <button 
               type="button" 
-              className="btn btn-secondary"
+              className="btn btn-outline btn-lg"
               onClick={handleClear}
               disabled={loading}
             >
+              <RefreshCw size={20} />
               Clear
             </button>
           </div>
