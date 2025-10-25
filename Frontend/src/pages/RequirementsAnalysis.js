@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { Send, RefreshCw, FileText, Lightbulb } from 'lucide-react';
+import { Send, RefreshCw, FileText, Lightbulb, CheckCircle, AlertTriangle, Database, Shield, TrendingUp, Users, Clock, Code } from 'lucide-react';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { analyzeRequirements } from '../services/api';
@@ -41,6 +41,156 @@ const RequirementsAnalysis = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const parseAnalysisContent = (content) => {
+    // Try to extract JSON if it's embedded in markdown code blocks
+    const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/);
+    if (jsonMatch) {
+      try {
+        return JSON.parse(jsonMatch[1]);
+      } catch (e) {
+        console.error('Failed to parse JSON from markdown:', e);
+      }
+    }
+
+    // Try to parse as direct JSON
+    try {
+      return JSON.parse(content);
+    } catch (e) {
+      // If not JSON, return as markdown content
+      return null;
+    }
+  };
+
+  const renderStructuredAnalysis = (analysisData) => {
+    const parsedData = parseAnalysisContent(analysisData.analysis);
+    
+    // If we couldn't parse it as JSON, render as markdown
+    if (!parsedData) {
+      return <MarkdownRenderer content={analysisData.analysis} />;
+    }
+
+    return (
+      <div className="structured-report">
+        {/* System Architecture */}
+        {parsedData['high-level_system_architecture'] && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <Code size={20} className="text-primary me-2" />
+              <h3 className="mb-0">System Architecture</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData['high-level_system_architecture']} />
+            </div>
+          </section>
+        )}
+
+        {/* Technology Stack */}
+        {parsedData.technology_stack_recommendations && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <Code size={20} className="text-primary me-2" />
+              <h3 className="mb-0">Technology Stack</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData.technology_stack_recommendations} />
+            </div>
+          </section>
+        )}
+
+        {/* Database Design */}
+        {parsedData.database_design_suggestions && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <Database size={20} className="text-primary me-2" />
+              <h3 className="mb-0">Database Design</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData.database_design_suggestions} />
+            </div>
+          </section>
+        )}
+
+        {/* API Design */}
+        {parsedData.api_design_patterns && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <Code size={20} className="text-primary me-2" />
+              <h3 className="mb-0">API Design Patterns</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData.api_design_patterns} />
+            </div>
+          </section>
+        )}
+
+        {/* Security */}
+        {parsedData.security_considerations && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <Shield size={20} className="text-warning me-2" />
+              <h3 className="mb-0">Security Considerations</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData.security_considerations} />
+            </div>
+          </section>
+        )}
+
+        {/* Scalability */}
+        {parsedData.scalability_recommendations && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <TrendingUp size={20} className="text-success me-2" />
+              <h3 className="mb-0">Scalability Recommendations</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData.scalability_recommendations} />
+            </div>
+          </section>
+        )}
+
+        {/* Challenges */}
+        {parsedData.potential_challenges_and_mitigation_strategies && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <AlertTriangle size={20} className="text-danger me-2" />
+              <h3 className="mb-0">Potential Challenges & Mitigation</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData.potential_challenges_and_mitigation_strategies} />
+            </div>
+          </section>
+        )}
+
+        {/* Timeline */}
+        {parsedData.development_timeline_estimate && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <Clock size={20} className="text-info me-2" />
+              <h3 className="mb-0">Development Timeline</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData.development_timeline_estimate} />
+            </div>
+          </section>
+        )}
+
+        {/* Team Structure */}
+        {parsedData.team_structure_recommendations && (
+          <section className="report-section mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <Users size={20} className="text-primary me-2" />
+              <h3 className="mb-0">Team Structure</h3>
+            </div>
+            <div className="card-body bg-light p-3 rounded">
+              <MarkdownRenderer content={parsedData.team_structure_recommendations} />
+            </div>
+          </section>
+        )}
+      </div>
+    );
   };
 
   const handleClear = () => {
@@ -169,7 +319,14 @@ const RequirementsAnalysis = () => {
 
         {/* Results Section */}
         <div className="card">
-          <h2 className="mb-4">Analysis Results</h2>
+          <div className="d-flex align-items-center justify-content-between mb-4">
+            <h2 className="mb-0">Analysis Report</h2>
+            {analysis && (
+              <small className="text-muted">
+                Generated: {new Date(analysis.timestamp).toLocaleString()}
+              </small>
+            )}
+          </div>
           {loading ? (
             <LoadingSpinner 
               message="Analyzing your requirements with AI" 
@@ -178,9 +335,13 @@ const RequirementsAnalysis = () => {
           ) : analysis ? (
             <div className="analysis-results">
               <div className="success mb-4">
-                <strong>Analysis Complete!</strong> Your requirements have been processed and analyzed.
+                <div className="d-flex align-items-center">
+                  <CheckCircle size={20} className="me-2" />
+                  <strong>Analysis Complete!</strong>
+                </div>
+                <p className="mb-0 mt-2">Your requirements have been processed and analyzed by our AI system.</p>
               </div>
-              <MarkdownRenderer content={analysis.analysis} />
+              {renderStructuredAnalysis(analysis)}
             </div>
           ) : (
             <div className="text-center p-5">
