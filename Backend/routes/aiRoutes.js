@@ -27,8 +27,8 @@ router.post('/analyze-requirements', async (req, res) => {
     Project Type: ${projectType || 'Not specified'}
     Constraints: ${constraints || 'None specified'}
 
-    Please provide:
-    1. High-level system architecture
+    Please provide a detailed analysis covering:
+    1. High-level system architecture overview
     2. Technology stack recommendations with reasons
     3. Database design suggestions
     4. API design patterns
@@ -38,7 +38,9 @@ router.post('/analyze-requirements', async (req, res) => {
     8. Development timeline estimate
     9. Team structure recommendations
 
-    Format your response as a structured JSON object with clear sections for each recommendation.
+    Format your response in clear, well-structured sections with headers and bullet points.
+    Use markdown formatting for better readability. Make it professional and comprehensive.
+    Focus on practical, actionable recommendations.
     `;
 
     const result = await model.generateContent(prompt);

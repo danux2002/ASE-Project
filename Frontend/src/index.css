@@ -839,6 +839,72 @@ code {
 
 .flex-fill { flex: 1; }
 
+/* Structured Report Styling */
+.structured-report {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.report-section {
+  border-left: 4px solid var(--primary-color);
+  padding-left: 20px;
+  margin-bottom: 32px;
+  transition: var(--transition);
+}
+
+.report-section:hover {
+  border-left-color: var(--secondary-color);
+}
+
+.report-section h3 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.report-section .card-body {
+  background: rgba(102, 126, 234, 0.03);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  transition: var(--transition);
+}
+
+.report-section .card-body:hover {
+  background: rgba(102, 126, 234, 0.05);
+  border-color: rgba(102, 126, 234, 0.2);
+}
+
+.analysis-results {
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+.analysis-results::-webkit-scrollbar {
+  width: 8px;
+}
+
+.analysis-results::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.analysis-results::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+.analysis-results::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
+/* Success message enhancement */
+.success {
+  background: linear-gradient(135deg, rgba(74, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+  border-left: 4px solid var(--success-color);
+  padding: 16px 20px;
+  border-radius: var(--border-radius-sm);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .hero-title {
