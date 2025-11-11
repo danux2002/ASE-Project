@@ -36,7 +36,7 @@ A comprehensive AI-powered software design automation tool that helps software e
 
 ### 1. Clone and Navigate
 ```bash
-cd "ASE"
+cd "ASE-Project"
 ```
 
 ### 2. Backend Setup
